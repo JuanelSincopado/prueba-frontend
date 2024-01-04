@@ -1,11 +1,17 @@
 interface Post {
-  id: string;
+  user: User;
+  _id: string;
   title: string;
   content: string;
   likes: number;
-  userID: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
+
+interface User {
+  id: string;
+  userName: string;
+}
+
 
 export default Post;

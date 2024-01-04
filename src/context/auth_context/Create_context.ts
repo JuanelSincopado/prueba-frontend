@@ -15,7 +15,7 @@ type AuthContextType = {
   setLoading: (loading: boolean) => void;
   setToken: (token: string) => void;
   setUser: (user: User) => void;
-  validateToken: () => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

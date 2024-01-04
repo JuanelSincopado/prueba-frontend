@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Title from '../../global_components/Title'
 import AuthOptions from './component/Auth_options'
-import FormButton from './component/Form_button'
+import FormButton from '../../global_components/Form_button'
 import FormInput from './component/Form_input'
 import FormTitle from './component/Form_title'
 import './css/auth.css'
@@ -38,20 +38,29 @@ const LoginView = () => {
 
     setLoading(true)
 
-    const { email, password } = formData
+    try {
+      const { email, password } = formData
 
-    if (email === '' || password === '') {
-      return setError('Por favor llene todos los campos')
+      if (email === '' || password === '') {
+        setLoading(false)
+        setError('Por favor llene todos los campos')
+        setTimeout(() => {
+          setError('')
+        }, 3000)
+        return
+      }
+
+      const auth: AuthFieldState = {
+        email,
+        password,
+      }
+
+      await login(auth)
+
+      navigate('/home')
+    } catch (error) {
+      console.log(error)
     }
-
-    const auth: AuthFieldState = {
-      email,
-      password,
-    }
-
-    await login(auth)
-
-    navigate('/home')
   }
 
   return (

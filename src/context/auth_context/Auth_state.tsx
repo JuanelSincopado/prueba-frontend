@@ -3,7 +3,6 @@ import baseUrl from '../../config/db'
 import AuthContext from './Create_context'
 import AuthFieldState from './local__data/Auth'
 import User from '../../model/User'
-import { useNavigate } from 'react-router-dom'
 
 type Props = {
   children: string | JSX.Element | JSX.Element[]
@@ -21,6 +20,7 @@ const AuthState = ({ children }: Props) => {
   const [user, setUser] = useState<User>({
     id: '',
     fullName: '',
+    userName: '',
     email: '',
     password: '',
     age: 0,
@@ -29,30 +29,9 @@ const AuthState = ({ children }: Props) => {
     updatedAt: new Date(),
   })
 
-  const validateToken = async () => {
-    try {
-      await fetch(`${baseUrl}/auth`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-      })
-        .then((res) => res.json())
-        .then((response) => {
-          console.log(response)
-        })
-        .then((error) => {
-          console.log(error)
-        })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   const login = async (auth: AuthFieldState) => {
     try {
-      fetch(`${baseUrl}/auth`, {
+      await fetch(`${baseUrl}/auth`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,12 +48,32 @@ const AuthState = ({ children }: Props) => {
         })
         .then((response) => {
           setToken(response.token)
-          setUser(response.user)
+
+          setUser({
+            id: response.user._id,
+            ...response.user,
+          })
           setLoading(false)
         })
     } catch (error) {
-      console.log(error)
+      setLoading(false)
+      throw setError('Error al iniciar sesion, verifique su correo')
     }
+  }
+
+  const logout = () => {
+    setToken('')
+    setUser({
+      id: '',
+      fullName: '',
+      userName: '',
+      email: '',
+      password: '',
+      age: 0,
+      posts: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
   }
 
   return (
@@ -92,7 +91,7 @@ const AuthState = ({ children }: Props) => {
         setSuccess,
         setToken,
         setUser,
-        validateToken,
+        logout,
       }}
     >
       {children}

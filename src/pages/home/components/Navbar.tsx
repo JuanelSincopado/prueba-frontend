@@ -1,17 +1,26 @@
 import { useState } from 'react'
-import Title from '../../../global_components/Title'
+import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../../context/auth_context/Use_auth_context'
-import { Link } from 'react-router-dom'
 import { useHomeContext } from '../../../context/home_context/Use_home_context'
+import Title from '../../../global_components/Title'
+import Content from './Content'
+import ContentNotLogged from './Content_not_logged'
 
 const NavbarMobile = () => {
+  const navigate = useNavigate()
   const [show, setShow] = useState(false)
-  const { user } = useAuthContext()
   const { setOpenEditModal } = useHomeContext()
+  const { token, logout } = useAuthContext()
 
   const handleEdit = () => {
     setOpenEditModal(true)
     setShow(false)
+  }
+
+  const handleLogout = () => {
+    logout()
+    setShow(false)
+    navigate('/')
   }
 
   return (
@@ -37,30 +46,12 @@ const NavbarMobile = () => {
           show ? 'content navbar_desktop active' : ' content navbar_desktop'
         }
       >
-        {user.email ? (
+        {token ? (
           <div className='navbar__content'>
-            <p className='navbar__content_name'>{user.fullName}</p>
-            <p className='navbar__content_email'>{user.email}</p>
-
-            <div className='navbar__content_edit' onClick={() => handleEdit()}>
-              <img src='edit.svg' alt='edit' />
-              <p>Editar cuenta</p>
-            </div>
-
-            <div className='navbar__content_logout'>
-              <img src='logout.svg' alt='logout' />
-              <p>Cerrar sesión</p>
-            </div>
+            <Content handleEdit={handleEdit} handleLogout={handleLogout} />
           </div>
         ) : (
-          <div className='navbar__not_logged'>
-            <p>No hay una sesión iniciada</p>
-
-            <div className='navbar__not_logged_buttons'>
-              <Link to='/'>Iniciar sesión</Link>
-              <Link to='/register'>Registrarse</Link>
-            </div>
-          </div>
+          <ContentNotLogged />
         )}
       </div>
     </div>

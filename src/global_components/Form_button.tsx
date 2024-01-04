@@ -1,3 +1,5 @@
+import Loader from './Loader'
+
 interface Props {
   text: string
   loading?: boolean
@@ -6,7 +8,7 @@ interface Props {
 const FormButton = ({ text, loading }: Props) => {
   return (
     <button type='submit' className='btn btn_primary'>
-      {loading ? <div className='loader'></div> : text}
+      {loading ? <Loader /> : text}
     </button>
   )
 }
