@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=Rubik+Glitch&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+:root {
+  --display-background-color: #272727;
+  --background-color-light: #2f2f2f;
+  --letter-dark: #e9e9e9;
+  --letter-light: #a9a9a9;
+  --blue: #1E8BDB;
+  --semi-light: #464646;
+  --red: #FF0000;
+  --green: #26a226;
+}
+
+body {
+  background-color: var(--display-background-color);
+  position: relative;
+}
+
+a {
+  text-decoration: none;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  width: 100%;
+  max-width: 350px;
+  height: 45px;
+  margin: 10px 0;
+  padding: 0 10px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.btn_primary {
+  background-color: var(--blue);
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 50px;
+}
+
+.error {
+  color: var(--red);
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.success {
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--green);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 15px;
+}
+
+/* ------------- LOADER ------------- */
+
+.loader {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite;
+  margin: 0 auto;
+}
+
+.loader::before,
+.loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #FFF;
+  animation: prixClipFix 2s linear infinite;
+}
+
+.loader::after {
+  transform: rotate3d(90, 90, 0, 180deg);
+  border-color: var(--letter-light);
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
+}
+
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0)
+  }
+
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0)
+  }
+
+  75%,
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%)
+  }
+}
+
+/* ------------- Title ------------- */
+
+.title {
+  color: var(--letter-dark);
+}
+
+.title p {
+  font-family: 'Rubik Glitch', system-ui;
+  font-weight: 700;
+  font-size: 60px;
+}

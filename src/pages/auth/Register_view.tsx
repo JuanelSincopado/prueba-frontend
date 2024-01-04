@@ -1,0 +1,142 @@
+import { useState } from 'react'
+import { useUserContext } from '../../context/user_context/Use_user_context'
+import Title from '../../global_components/Title'
+import AuthOptions from './component/Auth_options'
+import FormButton from './component/Form_button'
+import FormInput from './component/Form_input'
+import FormTitle from './component/Form_title'
+import User from '../../model/User'
+import { useNavigate } from 'react-router-dom'
+
+interface FormData {
+  fullName: string
+  age: number
+  email: string
+  password: string
+  password_repeat: string
+}
+
+const RegisterView = () => {
+  const { success, error, loading, setError, createUser, setLoading } =
+    useUserContext()
+
+  const navigate = useNavigate()
+
+  const [formData, setFormData] = useState<FormData>({
+    fullName: '',
+    age: 0,
+    email: '',
+    password: '',
+    password_repeat: '',
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    setLoading(true)
+
+    const { fullName, age, email, password, password_repeat } = formData
+
+    if (
+      fullName === '' ||
+      age === 0 ||
+      email === '' ||
+      password === '' ||
+      password_repeat === ''
+    ) {
+      setError('Por favor llene todos los campos')
+      setTimeout(() => {
+        setError('')
+      }, 3000)
+      return
+    }
+
+    if (password !== password_repeat) {
+      setError('Las contraseñas no coinciden')
+      setTimeout(() => {
+        setError('')
+      }, 3000)
+      return
+    }
+
+    const user: User = {
+      id: '',
+      fullName,
+      age: Number(age),
+      email,
+      password,
+      posts: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+
+    await createUser(user)
+
+    navigate('/')
+  }
+
+  return (
+    <div className='auth'>
+      <Title />
+
+      <FormTitle text='Registrarse' />
+
+      <form className='form' onSubmit={onSubmit}>
+        <FormInput
+          type='text'
+          placeholder='Nombre completo'
+          name='fullName'
+          onChange={(e) => handleChange(e)}
+        />
+
+        <FormInput
+          type='number'
+          placeholder='Edad'
+          name='age'
+          onChange={(e) => handleChange(e)}
+        />
+
+        <FormInput
+          type='email'
+          placeholder='Correo'
+          name='email'
+          onChange={(e) => handleChange(e)}
+        />
+
+        <FormInput
+          type='password'
+          placeholder='Contraseña'
+          name='password'
+          onChange={(e) => handleChange(e)}
+        />
+
+        <FormInput
+          type='password'
+          placeholder='Repetir Contraseña'
+          name='password_repeat'
+          onChange={(e) => handleChange(e)}
+        />
+
+        {error && <p className='error'>{error}</p>}
+        {success && <p className='success'>{success}</p>}
+
+        <FormButton text='Registrarse' loading={loading} />
+      </form>
+
+      <AuthOptions
+        text='¿Ya tiene cuenta?'
+        nameOfRoute='Inicie sesión'
+        route='/'
+      />
+    </div>
+  )
+}
+
+export default RegisterView
