@@ -27,7 +27,7 @@ const PostModal = () => {
     content: postEdit?.content || '',
     likes: postEdit?.likes || 0,
     title: postEdit?.title || '',
-    userID: user.id || '',
+    userID: user._id || '',
     userName: user.userName || '',
   })
 

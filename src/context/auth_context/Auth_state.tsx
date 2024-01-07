@@ -18,7 +18,7 @@ const AuthState = ({ children }: Props) => {
   const [success, setSuccess] = useState<string>('')
   const [token, setToken] = useState<string>('')
   const [user, setUser] = useState<User>({
-    id: '',
+    _id: '',
     fullName: '',
     userName: '',
     email: '',
@@ -44,10 +44,7 @@ const AuthState = ({ children }: Props) => {
       if (response.ok) {
         // Successful response
         setToken(data.token)
-        setUser({
-          id: data.user._id,
-          ...data.user,
-        })
+        setUser(data.user)
       } else {
         // Handle error response
 
@@ -71,7 +68,7 @@ const AuthState = ({ children }: Props) => {
   const logout = () => {
     setToken('')
     setUser({
-      id: '',
+      _id: '',
       fullName: '',
       userName: '',
       email: '',

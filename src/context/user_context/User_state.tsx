@@ -52,7 +52,7 @@ const UserState = ({ children }: Props) => {
 
   const editUser = async (form: EditFormData) => {
     try {
-      const response = await fetch(`${baseUrl}/user/update/${user.id}`, {
+      const response = await fetch(`${baseUrl}/user/update/${user._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

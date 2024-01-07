@@ -3,13 +3,13 @@ import { useHomeContext } from '../../../context/home_context/Use_home_context'
 import Loader from '../../../global_components/Loader'
 import Post from '../../../model/Post'
 import EnumPostModal from '../../../context/home_context/local_data/Enum_modal'
+import { useAuthContext } from '../../../context/auth_context/Use_auth_context'
 
 interface Props {
   post: Post
-  id: string
 }
 
-const CardPost = ({ post, id }: Props) => {
+const CardPost = ({ post }: Props) => {
   const {
     addFavorite,
     deletePost,
@@ -17,6 +17,8 @@ const CardPost = ({ post, id }: Props) => {
     setOpenPostModal,
     setPostEdit,
   } = useHomeContext()
+
+  const { user } = useAuthContext()
 
   const [loading, setLoading] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
@@ -55,7 +57,7 @@ const CardPost = ({ post, id }: Props) => {
         <div className='card__name'>
           <h3>{post.user.userName}</h3>
 
-          {post.user.id == id && (
+          {post.user.id == user._id && (
             <div
               className={
                 showDropdown

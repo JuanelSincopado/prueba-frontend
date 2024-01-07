@@ -31,6 +31,7 @@ const HomeState = ({ children }: Props) => {
     _id: '',
     createdAt: new Date(),
     updatedAt: new Date(),
+    deletedAt: null,
   })
 
   const { token } = useAuthContext()
@@ -54,8 +55,11 @@ const HomeState = ({ children }: Props) => {
         return
       }
 
-      setPosts(data)
-      setPostFilterSearch(data)
+      //filtrar los post que no tengan deleteAt
+      const filter = data.filter((post: Post) => !post.deletedAt)
+
+      setPosts(filter)
+      setPostFilterSearch(filter)
       setLoadingGlobal(false)
     } catch (error) {
       setLoadingGlobal(false)
@@ -151,14 +155,6 @@ const HomeState = ({ children }: Props) => {
       }, 2000)
 
       getAllPosts()
-
-      // setPostFilterSearch((prev) => {
-      //   const index = prev.findIndex((post) => post._id === data._id)
-
-      //   prev[index] = data
-
-      //   return prev
-      // })
     } catch (error) {
       console.log(error)
 

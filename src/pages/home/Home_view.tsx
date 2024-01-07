@@ -19,7 +19,7 @@ const HomeView = () => {
     getAllPosts,
     setOpenPostModal,
   } = useHomeContext()
-  const { user, token } = useAuthContext()
+  const { token } = useAuthContext()
 
   useEffect(() => {
     getAllPosts()
@@ -47,7 +47,7 @@ const HomeView = () => {
           <div className='home__post__container'>
             {postFilterSearch.length > 0 ? (
               postFilterSearch.map((post: Post) => {
-                return <CardPost post={post} id={user.id} key={post._id} />
+                return <CardPost post={post} key={post._id} />
               })
             ) : (
               <h3>No hay posts</h3>
