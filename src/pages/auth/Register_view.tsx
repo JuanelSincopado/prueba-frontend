@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 
 interface FormData {
   fullName: string
+  userName: string
   age: number
   email: string
   password: string
@@ -24,6 +25,7 @@ const RegisterView = () => {
 
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
+    userName: '',
     age: 0,
     email: '',
     password: '',
@@ -42,10 +44,12 @@ const RegisterView = () => {
 
     setLoading(true)
 
-    const { fullName, age, email, password, password_repeat } = formData
+    const { fullName, userName, age, email, password, password_repeat } =
+      formData
 
     if (
       fullName === '' ||
+      userName === '' ||
       age === 0 ||
       email === '' ||
       password === '' ||
@@ -55,6 +59,8 @@ const RegisterView = () => {
       setTimeout(() => {
         setError('')
       }, 3000)
+
+      setLoading(false)
       return
     }
 
@@ -68,6 +74,7 @@ const RegisterView = () => {
 
     const user: User = {
       id: '',
+      userName,
       fullName,
       age: Number(age),
       email,
@@ -93,6 +100,13 @@ const RegisterView = () => {
           type='text'
           placeholder='Nombre completo'
           name='fullName'
+          onChange={(e) => handleChange(e)}
+        />
+
+        <FormInput
+          type='text'
+          placeholder='Nombre de usuario'
+          name='userName'
           onChange={(e) => handleChange(e)}
         />
 

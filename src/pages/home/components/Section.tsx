@@ -23,16 +23,18 @@ const Section = () => {
 
   return (
     <section>
-      <Title />
+      <div className='section_content'>
+        <Title />
 
-      {token ? (
-        <Content
-          handleEdit={() => handleEdit()}
-          handleLogout={() => handleLogout()}
-        />
-      ) : (
-        <ContentNotLogged />
-      )}
+        {token ? (
+          <Content
+            handleEdit={() => handleEdit()}
+            handleLogout={() => handleLogout()}
+          />
+        ) : (
+          <ContentNotLogged />
+        )}
+      </div>
     </section>
   )
 }

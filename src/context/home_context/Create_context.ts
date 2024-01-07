@@ -1,25 +1,24 @@
 import { createContext } from "react";
 import Post from "../../model/Post";
 import CreateFormData from "../user_context/local_data/Create";
+import EnumPostModal from "./local_data/Enum_modal";
 
 type HomeContextType = {
-  openEditModal: boolean;
   error: string;
   success: string;
   loading: boolean;
   loadingGlobal: boolean;
   posts: Post[];
-  openCreateModal: boolean;
+  openPostModal: EnumPostModal;
   postEdit: Post;
   postFilterSearch: Post[];
-  setOpenEditModal: (open: boolean) => void;
   setError: (error: string) => void;
   setLoading: (loading: boolean) => void;
   setLoadingGlobal: (loading: boolean) => void;
   getAllPosts: () => void;
   addFavorite: (post_id: string, like: number) => void;
   deletePost: (post_id: string) => void;
-  setOpenCreateModal: (open: boolean) => void;
+  setOpenPostModal: (openPostModal: EnumPostModal) => void;
   createPost: (post: CreateFormData) => void;
   setPostEdit: (post: Post) => void;
   updatePost: (formData: CreateFormData) => void;

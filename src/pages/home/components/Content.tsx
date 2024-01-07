@@ -11,6 +11,7 @@ const Content = ({ handleEdit, handleLogout }: Props) => {
   return (
     <>
       <p className='content__name'>{user.fullName}</p>
+      <p className='content__email'>{user.userName}</p>
       <p className='content__email'>{user.email}</p>
 
       <div className='content__edit' onClick={() => handleEdit()}>

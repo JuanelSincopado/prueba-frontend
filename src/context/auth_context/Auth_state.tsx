@@ -31,33 +31,40 @@ const AuthState = ({ children }: Props) => {
 
   const login = async (auth: AuthFieldState) => {
     try {
-      await fetch(`${baseUrl}/auth`, {
+      const response = await fetch(`${baseUrl}/auth`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(auth),
       })
-        .then((res) => res.json())
-        .catch((error) => {
-          setError(error.msg)
-          setTimeout(() => {
-            setError('')
-          }, 3000)
-          setLoading(false)
-        })
-        .then((response) => {
-          setToken(response.token)
 
-          setUser({
-            id: response.user._id,
-            ...response.user,
-          })
-          setLoading(false)
+      const data = await response.json()
+
+      if (response.ok) {
+        // Successful response
+        setToken(data.token)
+        setUser({
+          id: data.user._id,
+          ...data.user,
         })
+      } else {
+        // Handle error response
+
+        setError(data.msg || 'Error al iniciar sesión')
+        setTimeout(() => {
+          setError('')
+        }, 3000)
+
+        return Promise.reject({
+          message: data.msg,
+        })
+      }
     } catch (error) {
+      console.error(error)
+      setError('Error al iniciar sesión, intentelo de nuevo')
+    } finally {
       setLoading(false)
-      throw setError('Error al iniciar sesion, verifique su correo')
     }
   }
 

@@ -47,19 +47,20 @@ const LoginView = () => {
         setTimeout(() => {
           setError('')
         }, 3000)
-        return
+      } else {
+        const auth: AuthFieldState = {
+          email,
+          password,
+        }
+
+        await login(auth)
+
+        navigate('/home')
       }
-
-      const auth: AuthFieldState = {
-        email,
-        password,
-      }
-
-      await login(auth)
-
-      navigate('/home')
     } catch (error) {
-      console.log(error)
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
   }
 

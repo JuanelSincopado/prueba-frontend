@@ -4,19 +4,21 @@ import { useHomeContext } from '../../../context/home_context/Use_home_context'
 import CreateFormData from '../../../context/user_context/local_data/Create'
 import FormButton from '../../../global_components/Form_button'
 import FormInput from '../../auth/component/Form_input'
+import EnumPostModal from '../../../context/home_context/local_data/Enum_modal'
 
-const CreateModal = () => {
+const PostModal = () => {
   const {
     loading,
     error,
-    setOpenCreateModal,
+    setOpenPostModal,
     setLoading,
     setError,
-    createPost,
     postEdit,
     setPostEdit,
-    updatePost,
     success,
+    createPost,
+    updatePost,
+    openPostModal,
   } = useHomeContext()
 
   const { user } = useAuthContext()
@@ -25,8 +27,8 @@ const CreateModal = () => {
     content: postEdit?.content || '',
     likes: postEdit?.likes || 0,
     title: postEdit?.title || '',
-    userID: '',
-    userName: '',
+    userID: user.id || '',
+    userName: user.userName || '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,23 +50,19 @@ const CreateModal = () => {
       setTimeout(() => {
         setError('')
       }, 2000)
+      setLoading(false)
       return
     }
 
-    setFormData({
-      title: title,
-      content: content,
-      likes: postEdit?.likes || 0,
-      userID: user.id,
-      userName: user.userName,
-    })
+    await setFormData(formData)
 
-    if (postEdit) {
-      await updatePost(postEdit._id, formData)
-      return
-    } else {
+    if (openPostModal == EnumPostModal.CREATE) {
       await createPost(formData)
+    } else {
+      await updatePost(formData)
     }
+
+    closeModal()
   }
 
   const closeModal = () => {
@@ -80,14 +78,18 @@ const CreateModal = () => {
       updatedAt: new Date(),
       _id: '',
     })
-    setOpenCreateModal(false)
+    setOpenPostModal(EnumPostModal.NONE)
   }
 
   return (
     <div className='modal__background'>
       <div className='modal__container'>
         <div className='modal_flex'>
-          <p>Crear Post</p>
+          <p>
+            {openPostModal == EnumPostModal.CREATE
+              ? 'Crear post'
+              : 'Editar post'}
+          </p>
           <button onClick={() => closeModal()}>&times;</button>
         </div>
 
@@ -111,11 +113,14 @@ const CreateModal = () => {
           {error && <p className='error'>{error}</p>}
           {success && <p className='success'>{success}</p>}
 
-          <FormButton text={postEdit ? 'Editar' : 'Crear'} loading={loading} />
+          <FormButton
+            text={openPostModal == EnumPostModal.CREATE ? 'Crear' : 'Editar'}
+            loading={loading}
+          />
         </form>
       </div>
     </div>
   )
 }
 
-export default CreateModal
+export default PostModal

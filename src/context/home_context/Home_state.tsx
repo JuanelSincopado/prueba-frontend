@@ -4,19 +4,22 @@ import Post from '../../model/Post'
 import baseUrl from '../../config/db'
 import { useAuthContext } from '../auth_context/Use_auth_context'
 import CreateFormData from '../user_context/local_data/Create'
+import EnumPostModal from './local_data/Enum_modal'
 
 type Props = {
   children: string | JSX.Element | JSX.Element[]
 }
 
 const HomeState = ({ children }: Props) => {
-  const [openEditModal, setOpenEditModal] = useState(false)
-  const [openCreateModal, setOpenCreateModal] = useState(false)
+  const [openPostModal, setOpenPostModal] = useState<EnumPostModal>(
+    EnumPostModal.NONE
+  )
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [loadingGlobal, setLoadingGlobal] = useState(false)
   const [posts, setPosts] = useState<Post[]>([])
+  const [postFilterSearch, setPostFilterSearch] = useState<Post[]>([])
   const [postEdit, setPostEdit] = useState<Post>({
     content: '',
     likes: 0,
@@ -29,7 +32,6 @@ const HomeState = ({ children }: Props) => {
     createdAt: new Date(),
     updatedAt: new Date(),
   })
-  const [postFilterSearch, setPostFilterSearch] = useState<Post[]>([])
 
   const { token } = useAuthContext()
 
@@ -71,8 +73,6 @@ const HomeState = ({ children }: Props) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
-        mode: 'no-cors',
-        credentials: 'include',
       })
 
       const data = await response.json()
@@ -84,6 +84,7 @@ const HomeState = ({ children }: Props) => {
       }
 
       setPosts([...posts, data])
+      setPostFilterSearch([...posts, data])
       setLoading(false)
     } catch (error) {
       setLoading(false)
@@ -106,8 +107,6 @@ const HomeState = ({ children }: Props) => {
       })
 
       const data = await response.json()
-
-      console.log(data)
 
       if (data.error) {
         setError(data.error)
@@ -150,6 +149,16 @@ const HomeState = ({ children }: Props) => {
       setTimeout(() => {
         setSuccess('')
       }, 2000)
+
+      getAllPosts()
+
+      // setPostFilterSearch((prev) => {
+      //   const index = prev.findIndex((post) => post._id === data._id)
+
+      //   prev[index] = data
+
+      //   return prev
+      // })
     } catch (error) {
       console.log(error)
 
@@ -177,6 +186,7 @@ const HomeState = ({ children }: Props) => {
         return
       }
 
+      setPostFilterSearch(posts.filter((post) => post._id !== post_id))
       setPosts(posts.filter((post) => post._id !== post_id))
 
       setLoading(false)
@@ -201,7 +211,6 @@ const HomeState = ({ children }: Props) => {
   return (
     <HomeContext.Provider
       value={{
-        openEditModal,
         error,
         loading,
         loadingGlobal,
@@ -209,15 +218,14 @@ const HomeState = ({ children }: Props) => {
         postEdit,
         success,
         postFilterSearch,
-        openCreateModal,
-        setOpenEditModal,
+        openPostModal,
         setError,
         setLoading,
         setLoadingGlobal,
         getAllPosts,
         addFavorite,
         deletePost,
-        setOpenCreateModal,
+        setOpenPostModal,
         createPost,
         setPostEdit,
         updatePost,

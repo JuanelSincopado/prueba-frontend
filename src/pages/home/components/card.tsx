@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { useAuthContext } from '../../../context/auth_context/Use_auth_context'
 import { useHomeContext } from '../../../context/home_context/Use_home_context'
-import Post from '../../../model/Post'
 import Loader from '../../../global_components/Loader'
+import Post from '../../../model/Post'
+import EnumPostModal from '../../../context/home_context/local_data/Enum_modal'
 
 interface Props {
   post: Post
@@ -14,10 +14,9 @@ const CardPost = ({ post, id }: Props) => {
     addFavorite,
     deletePost,
     setLoadingGlobal,
-    setOpenCreateModal,
+    setOpenPostModal,
     setPostEdit,
   } = useHomeContext()
-  const { token } = useAuthContext()
 
   const [loading, setLoading] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
@@ -35,7 +34,7 @@ const CardPost = ({ post, id }: Props) => {
   }
 
   const editCard = () => {
-    setOpenCreateModal(true)
+    setOpenPostModal(EnumPostModal.UPDATE)
     setPostEdit({
       title: post.title,
       content: post.content,
@@ -89,7 +88,7 @@ const CardPost = ({ post, id }: Props) => {
         <p className='card__body_content'>{post.content}</p>
       </div>
 
-      {token != '' && !loading ? (
+      {!loading ? (
         <div className='card__footer'>
           <img
             className='favorite'

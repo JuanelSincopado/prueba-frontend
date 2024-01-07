@@ -3,22 +3,21 @@ import { useAuthContext } from '../../context/auth_context/Use_auth_context'
 import { useHomeContext } from '../../context/home_context/Use_home_context'
 import Loader from '../../global_components/Loader'
 import Post from '../../model/Post'
-import EditModel from './components/Edit_model'
 import NavbarMobile from './components/Navbar'
+import CreateModal from './components/Post_modal'
 import Search from './components/Search'
 import Section from './components/Section'
 import CardPost from './components/card'
 import './css/home.css'
-import CreateModal from './components/Create_modal'
+import EnumPostModal from '../../context/home_context/local_data/Enum_modal'
 
 const HomeView = () => {
   const {
     postFilterSearch,
-    openCreateModal,
+    openPostModal,
     loadingGlobal,
-    openEditModal,
     getAllPosts,
-    setOpenCreateModal,
+    setOpenPostModal,
   } = useHomeContext()
   const { user, token } = useAuthContext()
 
@@ -59,7 +58,7 @@ const HomeView = () => {
             <div className='home__add'>
               <button
                 className='add__post'
-                onClick={() => setOpenCreateModal(true)}
+                onClick={() => setOpenPostModal(EnumPostModal.CREATE)}
               >
                 +
               </button>
@@ -68,9 +67,7 @@ const HomeView = () => {
         </div>
       </div>
 
-      {openEditModal && <EditModel />}
-
-      {openCreateModal && <CreateModal />}
+      {openPostModal != EnumPostModal.NONE && <CreateModal />}
     </div>
   )
 }
