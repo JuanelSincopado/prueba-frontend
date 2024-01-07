@@ -10,10 +10,12 @@ import Section from './components/Section'
 import CardPost from './components/card'
 import './css/home.css'
 import EnumPostModal from '../../context/home_context/local_data/Enum_modal'
+import EditModel from './components/Edit_model'
 
 const HomeView = () => {
   const {
     postFilterSearch,
+    openEditUserModal,
     openPostModal,
     loadingGlobal,
     getAllPosts,
@@ -68,6 +70,8 @@ const HomeView = () => {
       </div>
 
       {openPostModal != EnumPostModal.NONE && <CreateModal />}
+
+      {openEditUserModal && <EditModel />}
     </div>
   )
 }

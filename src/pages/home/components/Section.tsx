@@ -7,13 +7,13 @@ import ContentNotLogged from './Content_not_logged'
 
 const Section = () => {
   const { token } = useAuthContext()
-  const { setOpenEditModal } = useHomeContext()
+  const { setOpenEditUserModal } = useHomeContext()
   const { logout } = useAuthContext()
 
   const navigate = useNavigate()
 
   const handleEdit = () => {
-    setOpenEditModal(true)
+    setOpenEditUserModal(true)
   }
 
   const handleLogout = () => {

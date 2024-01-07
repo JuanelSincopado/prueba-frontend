@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useHomeContext } from '../../../context/home_context/Use_home_context'
-import FormInput from '../../auth/component/Form_input'
-import FormButton from '../../../global_components/Form_button'
 import { useAuthContext } from '../../../context/auth_context/Use_auth_context'
-import EditFormData from '../../../context/user_context/local_data/Edit'
+import { useHomeContext } from '../../../context/home_context/Use_home_context'
 import { useUserContext } from '../../../context/user_context/Use_user_context'
-import EnumPostModal from '../../../context/home_context/local_data/Enum_modal'
+import EditFormData from '../../../context/user_context/local_data/Edit'
+import FormButton from '../../../global_components/Form_button'
+import FormInput from '../../auth/component/Form_input'
 
 const EditModel = () => {
-  const { setOpenPostModal, setError } = useHomeContext()
+  const { setOpenEditUserModal, setError } = useHomeContext()
   const { user } = useAuthContext()
   const { error, success, loading, setLoading, editUser } = useUserContext()
 
@@ -54,9 +53,7 @@ const EditModel = () => {
       <div className='modal__container'>
         <div className='modal_flex'>
           <p>Editar cuenta</p>
-          <button onClick={() => setOpenPostModal(EnumPostModal.UPDATE)}>
-            &times;
-          </button>
+          <button onClick={() => setOpenEditUserModal(false)}>&times;</button>
         </div>
 
         <form className='modal__form' onSubmit={handleSubmit}>

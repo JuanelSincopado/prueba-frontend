@@ -12,6 +12,7 @@ type HomeContextType = {
   openPostModal: EnumPostModal;
   postEdit: Post;
   postFilterSearch: Post[];
+  openEditUserModal: boolean;
   setError: (error: string) => void;
   setLoading: (loading: boolean) => void;
   setLoadingGlobal: (loading: boolean) => void;
@@ -24,6 +25,7 @@ type HomeContextType = {
   updatePost: (formData: CreateFormData) => void;
   setSuccess: (success: string) => void;
   filterPosts: (filter: string) => void;
+  setOpenEditUserModal: (open: boolean) => void;
 }
 
 const HomeContext = createContext<HomeContextType | undefined>(undefined);

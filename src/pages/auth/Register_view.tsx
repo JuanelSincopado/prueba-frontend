@@ -73,7 +73,7 @@ const RegisterView = () => {
     }
 
     const user: User = {
-      id: '',
+      _id: '',
       userName,
       fullName,
       age: Number(age),

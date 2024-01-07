@@ -1,0 +1,32 @@
+.not_found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.not_found h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--letter-dark);
+  margin-bottom: 10px;
+}
+
+.not_found p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--letter-light);
+  margin-bottom: 20px;
+}
+
+.not_found a {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--letter-light);
+  text-decoration: none;
+  background-color: var(--blue);
+  padding: 10px 20px;
+  border-radius: 15px;
+  color: white;
+}

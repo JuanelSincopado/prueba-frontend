@@ -14,6 +14,7 @@ const HomeState = ({ children }: Props) => {
   const [openPostModal, setOpenPostModal] = useState<EnumPostModal>(
     EnumPostModal.NONE
   )
+  const [openEditUserModal, setOpenEditUserModal] = useState<boolean>(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
@@ -215,6 +216,7 @@ const HomeState = ({ children }: Props) => {
         success,
         postFilterSearch,
         openPostModal,
+        openEditUserModal,
         setError,
         setLoading,
         setLoadingGlobal,
@@ -227,6 +229,7 @@ const HomeState = ({ children }: Props) => {
         updatePost,
         setSuccess,
         filterPosts,
+        setOpenEditUserModal,
       }}
     >
       {children}
