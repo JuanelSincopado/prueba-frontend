@@ -115,7 +115,14 @@ const CardPost = ({ post }: Props) => {
           )}
         </div>
 
-        {/* <p>{post.createdAt.getDate.toString()}</p> */}
+        <p>
+          {post.createdAt.getDate() +
+            '/' +
+            post.createdAt.getMonth() +
+            1 +
+            '/' +
+            post.createdAt.getFullYear()}
+        </p>
       </div>
 
       <div className='card__body'>

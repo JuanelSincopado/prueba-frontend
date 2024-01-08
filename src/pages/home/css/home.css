@@ -341,6 +341,11 @@ section {
   width: 100%;
 }
 
+.card__top p {
+  font-size: .8rem;
+  color: var(--letter-light);
+}
+
 .card__name {
   width: 100%;
   display: flex;

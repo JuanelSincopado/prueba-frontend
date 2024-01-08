@@ -69,6 +69,12 @@ const HomeState = ({ children }: Props) => {
       //filtrar los post que no tengan deleteAt
       const filter = data.filter((post: Post) => !post.deletedAt)
 
+      // convertir la fecha de string a Date
+      filter.forEach((post: Post) => {
+        post.createdAt = new Date(post.createdAt)
+        post.updatedAt = new Date(post.updatedAt)
+      })
+
       setPosts(filter)
       setPostFilterSearch(filter)
     } catch (error) {
