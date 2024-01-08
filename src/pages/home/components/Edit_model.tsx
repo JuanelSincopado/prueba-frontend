@@ -57,26 +57,32 @@ const EditModel = () => {
         </div>
 
         <form className='modal__form' onSubmit={handleSubmit}>
-          <FormInput
-            name='fullName'
-            placeholder='Nombre Completo'
-            type='text'
-            onChange={(e) => handleChange(e)}
-            defaultValue={user?.fullName}
-          />
+          <div className='form__input_container'>
+            <label>Nombre completo</label>
+            <FormInput
+              name='fullName'
+              placeholder='Nombre completo'
+              type='text'
+              onChange={(e) => handleChange(e)}
+              defaultValue={user?.fullName}
+            />
+          </div>
 
-          <FormInput
-            name='age'
-            placeholder='Edad'
-            type='number'
-            onChange={(e) => handleChange(e)}
-            defaultValue={String(user?.age)}
-          />
+          <div className='form__input_container'>
+            <label>Edad</label>
+            <FormInput
+              name='age'
+              placeholder='Edad'
+              type='number'
+              onChange={(e) => handleChange(e)}
+              defaultValue={String(user?.age)}
+            />
+          </div>
 
           {error && <p className='error'>{error}</p>}
           {success && <p className='success'>{success}</p>}
 
-          <FormButton text='Editar' loading={loading} />
+          <FormButton text='Guardar cambios' loading={loading} />
         </form>
       </div>
     </div>

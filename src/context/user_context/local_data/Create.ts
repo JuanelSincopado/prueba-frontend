@@ -3,7 +3,7 @@ interface CreateFormData {
   content: string
   userID: string
   userName: string
-  likes: number
+  likes: string[]
 }
 
 export default CreateFormData

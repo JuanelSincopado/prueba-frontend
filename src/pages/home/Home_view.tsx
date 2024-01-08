@@ -11,7 +11,8 @@ import CardPost from './components/card'
 import './css/home.css'
 import EnumPostModal from '../../context/home_context/local_data/Enum_modal'
 import EditModel from './components/Edit_model'
-import { useNavigate } from 'react-router-dom'
+import CustomAlert from '../../global_components/Custom_alert'
+import EnumAlerts from '../../context/home_context/local_data/Enum_alerts'
 
 const HomeView = () => {
   const {
@@ -21,11 +22,11 @@ const HomeView = () => {
     loadingGlobal,
     getAllPosts,
     setOpenPostModal,
+    messageAlert,
+    loadingPost,
   } = useHomeContext()
 
-  const { setToken, setUser } = useAuthContext()
-
-  const { token } = useAuthContext()
+  const { setToken, setUser, token } = useAuthContext()
 
   useEffect(() => {
     getAllPosts()
@@ -57,35 +58,43 @@ const HomeView = () => {
       <div className='home__body'>
         <Section />
 
-        <div className='home__post'>
-          <Search />
+        {loadingPost ? (
+          <div className='loader__global'>
+            <Loader />
+          </div>
+        ) : (
+          <div className='home__post'>
+            <Search />
 
-          <div className='home__post__container'>
-            {postFilterSearch.length > 0 ? (
-              postFilterSearch.map((post: Post) => {
-                return <CardPost post={post} key={post._id} />
-              })
-            ) : (
-              <h3>No hay posts</h3>
+            <div className='home__post__container'>
+              {postFilterSearch.length > 0 ? (
+                postFilterSearch.map((post: Post) => {
+                  return <CardPost post={post} key={post._id} />
+                })
+              ) : (
+                <h3>No hay publicaciones</h3>
+              )}
+            </div>
+
+            {token && (
+              <div className='home__add'>
+                <button
+                  className='add__post'
+                  onClick={() => setOpenPostModal(EnumPostModal.CREATE)}
+                >
+                  +
+                </button>
+              </div>
             )}
           </div>
-
-          {token && (
-            <div className='home__add'>
-              <button
-                className='add__post'
-                onClick={() => setOpenPostModal(EnumPostModal.CREATE)}
-              >
-                +
-              </button>
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       {openPostModal != EnumPostModal.NONE && <CreateModal />}
 
       {openEditUserModal && <EditModel />}
+
+      {messageAlert.type != EnumAlerts.NONE && <CustomAlert />}
     </div>
   )
 }

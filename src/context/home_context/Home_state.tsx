@@ -5,6 +5,8 @@ import baseUrl from '../../config/db'
 import { useAuthContext } from '../auth_context/Use_auth_context'
 import CreateFormData from '../user_context/local_data/Create'
 import EnumPostModal from './local_data/Enum_modal'
+import Message_alert from './local_data/Message_alert'
+import EnumAlerts from './local_data/Enum_alerts'
 
 type Props = {
   children: string | JSX.Element | JSX.Element[]
@@ -19,8 +21,13 @@ const HomeState = ({ children }: Props) => {
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [loadingGlobal, setLoadingGlobal] = useState(false)
+  const [loadingPost, setLoadingPost] = useState(false)
   const [posts, setPosts] = useState<Post[]>([])
   const [postFilterSearch, setPostFilterSearch] = useState<Post[]>([])
+  const [messageAlert, setMessageAlert] = useState<Message_alert>({
+    type: EnumAlerts.NONE,
+    message: '',
+  })
   const [postEdit, setPostEdit] = useState<Post>({
     content: '',
     likes: [],
@@ -37,9 +44,13 @@ const HomeState = ({ children }: Props) => {
 
   const { token, user } = useAuthContext()
 
-  const getAllPosts = async () => {
+  const getAllPosts = async ({ loadingGlobal = true }) => {
     try {
-      setLoadingGlobal(true)
+      if (loadingGlobal) {
+        setLoadingGlobal(true)
+      } else {
+        setLoadingPost(true)
+      }
 
       const response = await fetch(baseUrl + '/post', {
         method: 'GET',
@@ -52,7 +63,6 @@ const HomeState = ({ children }: Props) => {
 
       if (data.error) {
         setError(data.error)
-        setLoadingGlobal(false)
         return
       }
 
@@ -61,9 +71,15 @@ const HomeState = ({ children }: Props) => {
 
       setPosts(filter)
       setPostFilterSearch(filter)
-      setLoadingGlobal(false)
     } catch (error) {
+      console.log(error)
+      setMessageAlert({
+        type: EnumAlerts.ERROR,
+        message: 'Error al obtener los post',
+      })
+    } finally {
       setLoadingGlobal(false)
+      setLoadingPost(false)
     }
   }
 
@@ -88,9 +104,21 @@ const HomeState = ({ children }: Props) => {
         return
       }
 
-      setPosts([...posts, data])
-      setPostFilterSearch([...posts, data])
       setLoading(false)
+
+      getAllPosts({ loadingGlobal: false })
+
+      setMessageAlert({
+        type: EnumAlerts.SUCCESS,
+        message: 'Post creado correctamente',
+      })
+
+      setTimeout(() => {
+        setMessageAlert({
+          type: EnumAlerts.NONE,
+          message: '',
+        })
+      }, 2000)
     } catch (error) {
       setLoading(false)
     }
@@ -159,13 +187,20 @@ const HomeState = ({ children }: Props) => {
       }
 
       setLoading(false)
-      setSuccess('Post actualizado correctamente')
+
+      getAllPosts({ loadingGlobal: false })
+
+      setMessageAlert({
+        type: EnumAlerts.SUCCESS,
+        message: 'Post actualizado correctamente',
+      })
 
       setTimeout(() => {
-        setSuccess('')
+        setMessageAlert({
+          type: EnumAlerts.NONE,
+          message: '',
+        })
       }, 2000)
-
-      getAllPosts()
     } catch (error) {
       console.log(error)
 
@@ -193,10 +228,21 @@ const HomeState = ({ children }: Props) => {
         return
       }
 
-      setPostFilterSearch(posts.filter((post) => post._id !== post_id))
-      setPosts(posts.filter((post) => post._id !== post_id))
+      getAllPosts({ loadingGlobal: false })
 
       setLoading(false)
+
+      setMessageAlert({
+        type: EnumAlerts.SUCCESS,
+        message: 'Post eliminado correctamente',
+      })
+
+      setTimeout(() => {
+        setMessageAlert({
+          type: EnumAlerts.NONE,
+          message: '',
+        })
+      }, 2000)
     } catch (error) {
       console.log(error)
 
@@ -224,13 +270,15 @@ const HomeState = ({ children }: Props) => {
         posts,
         postEdit,
         success,
+        messageAlert,
+        loadingPost,
         postFilterSearch,
         openPostModal,
         openEditUserModal,
         setError,
         setLoading,
         setLoadingGlobal,
-        getAllPosts,
+        getAllPosts: () => getAllPosts({ loadingGlobal: true }),
         addFavorite,
         deletePost,
         setOpenPostModal,
@@ -240,6 +288,8 @@ const HomeState = ({ children }: Props) => {
         setSuccess,
         filterPosts,
         setOpenEditUserModal,
+        setMessageAlert,
+        setLoadingPost,
       }}
     >
       {children}

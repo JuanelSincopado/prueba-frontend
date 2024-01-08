@@ -4,6 +4,7 @@ import Loader from '../../../global_components/Loader'
 import Post from '../../../model/Post'
 import EnumPostModal from '../../../context/home_context/local_data/Enum_modal'
 import { useAuthContext } from '../../../context/auth_context/Use_auth_context'
+import EnumAlerts from '../../../context/home_context/local_data/Enum_alerts'
 
 interface Props {
   post: Post
@@ -13,12 +14,12 @@ const CardPost = ({ post }: Props) => {
   const {
     addFavorite,
     deletePost,
-    setLoadingGlobal,
     setOpenPostModal,
     setPostEdit,
+    setMessageAlert,
   } = useHomeContext()
 
-  const { user } = useAuthContext()
+  const { user, token } = useAuthContext()
 
   const [loading, setLoading] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
@@ -43,15 +44,27 @@ const CardPost = ({ post }: Props) => {
   }, [dropdownRef])
 
   const addFavoritePost = async () => {
+    if (!token) {
+      setMessageAlert({
+        message: 'Por favor, inicia sesión para agregar a favoritos',
+        type: EnumAlerts.ERROR,
+      })
+      setTimeout(() => {
+        setMessageAlert({
+          message: '',
+          type: EnumAlerts.NONE,
+        })
+      }, 2000)
+      return
+    }
+
     setLoading(true)
     await addFavorite(post._id)
     setLoading(false)
   }
 
   const deleteCard = async () => {
-    setLoadingGlobal(true)
     await deletePost(post._id)
-    setLoadingGlobal(false)
   }
 
   const editCard = () => {
@@ -111,23 +124,25 @@ const CardPost = ({ post }: Props) => {
         <p className='card__body_content'>{post.content}</p>
       </div>
 
-      {!loading ? (
-        <div className='card__footer'>
-          <img
-            className='favorite'
-            src={
-              post.likes.find((like) => like == user._id)
-                ? 'heart-solid.svg'
-                : 'heart-regular.svg'
-            }
-            alt='like'
-            onClick={() => addFavoritePost()}
-          />
-          <p>{post.likes.length}</p>
-        </div>
-      ) : (
-        <Loader />
-      )}
+      <div className='card__footer'>
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <img
+              className='favorite'
+              src={
+                post.likes.find((like) => like == user._id)
+                  ? 'heart-solid.svg'
+                  : 'heart-regular.svg'
+              }
+              alt='like'
+              onClick={() => addFavoritePost()}
+            />
+            <p>{post.likes.length}</p>
+          </>
+        )}
+      </div>
     </div>
   )
 }

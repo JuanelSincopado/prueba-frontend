@@ -42,11 +42,15 @@ const UserState = ({ children }: Props) => {
         setTimeout(() => {
           setError('')
         }, 3000)
-      }
 
-      setLoading(false)
+        return Promise.reject({
+          message: 'Error al crear usuario',
+        })
+      }
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 

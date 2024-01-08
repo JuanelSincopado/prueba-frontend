@@ -25,7 +25,7 @@ const PostModal = () => {
 
   const [formData, setFormData] = useState<CreateFormData>({
     content: postEdit?.content || '',
-    likes: postEdit?.likes || 0,
+    likes: postEdit?.likes || [],
     title: postEdit?.title || '',
     userID: user._id || '',
     userName: user.userName || '',
@@ -69,7 +69,7 @@ const PostModal = () => {
     setPostEdit({
       title: '',
       content: '',
-      likes: 0,
+      likes: [],
       user: {
         id: '',
         userName: '',
@@ -77,6 +77,7 @@ const PostModal = () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       _id: '',
+      deletedAt: null,
     })
     setOpenPostModal(EnumPostModal.NONE)
   }
@@ -114,7 +115,11 @@ const PostModal = () => {
           {success && <p className='success'>{success}</p>}
 
           <FormButton
-            text={openPostModal == EnumPostModal.CREATE ? 'Crear' : 'Editar'}
+            text={
+              openPostModal == EnumPostModal.CREATE
+                ? 'Crear'
+                : 'Guardar Cambios'
+            }
             loading={loading}
           />
         </form>

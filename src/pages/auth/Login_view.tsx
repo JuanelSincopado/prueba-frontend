@@ -82,37 +82,41 @@ const LoginView = () => {
   }
 
   return (
-    <div className='auth'>
-      <Title />
+    <div className='auth__container'>
+      <img src='7613.jpg' alt='login' />
 
-      <FormTitle text='Iniciar sesión' />
+      <div className='auth'>
+        <Title />
 
-      <form className='form' onSubmit={onSubmit}>
-        <FormInput
-          type='email'
-          placeholder='Correo'
-          name='email'
-          onChange={handleChange}
+        <FormTitle text='Iniciar sesión' />
+
+        <form className='form' onSubmit={onSubmit}>
+          <FormInput
+            type='email'
+            placeholder='Correo'
+            name='email'
+            onChange={handleChange}
+          />
+
+          <FormInput
+            type='password'
+            placeholder='Contraseña'
+            name='password'
+            onChange={handleChange}
+          />
+
+          {error && <p className='error'>{error}</p>}
+          {success && <p className='success'>{success}</p>}
+
+          <FormButton text='Iniciar sesión' loading={loading} />
+        </form>
+
+        <AuthOptions
+          text='¿No tienes una cuenta?'
+          nameOfRoute='Registrate'
+          route='/register'
         />
-
-        <FormInput
-          type='password'
-          placeholder='Contraseña'
-          name='password'
-          onChange={handleChange}
-        />
-
-        {error && <p className='error'>{error}</p>}
-        {success && <p className='success'>{success}</p>}
-
-        <FormButton text='Iniciar sesión' loading={loading} />
-      </form>
-
-      <AuthOptions
-        text='¿No tienes una cuenta?'
-        nameOfRoute='Registrate'
-        route='/register'
-      />
+      </div>
     </div>
   )
 }

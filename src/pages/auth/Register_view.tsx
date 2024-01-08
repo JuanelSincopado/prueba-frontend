@@ -90,83 +90,91 @@ const RegisterView = () => {
       return
     }
 
-    const user: User = {
-      _id: '',
-      userName,
-      fullName,
-      age: Number(age),
-      email,
-      password,
-      posts: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
+    try {
+      const user: User = {
+        _id: '',
+        userName,
+        fullName,
+        age: Number(age),
+        email,
+        password,
+        posts: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+
+      await createUser(user)
+
+      navigate('/')
+    } catch (error) {
+      console.log(error)
     }
-
-    await createUser(user)
-
-    navigate('/')
   }
 
   return (
-    <div className='auth'>
-      <Title />
+    <div className='auth__container'>
+      <img src='7613.jpg' alt='login' />
 
-      <FormTitle text='Registrarse' />
+      <div className='auth'>
+        <Title />
 
-      <form className='form' onSubmit={onSubmit}>
-        <FormInput
-          type='text'
-          placeholder='Nombre completo'
-          name='fullName'
-          onChange={(e) => handleChange(e)}
+        <FormTitle text='Registrarse' />
+
+        <form className='form' onSubmit={onSubmit}>
+          <FormInput
+            type='text'
+            placeholder='Nombre completo'
+            name='fullName'
+            onChange={(e) => handleChange(e)}
+          />
+
+          <FormInput
+            type='text'
+            placeholder='Nombre de usuario'
+            name='userName'
+            onChange={(e) => handleChange(e)}
+          />
+
+          <FormInput
+            type='number'
+            placeholder='Edad'
+            name='age'
+            onChange={(e) => handleChange(e)}
+          />
+
+          <FormInput
+            type='email'
+            placeholder='Correo'
+            name='email'
+            onChange={(e) => handleChange(e)}
+          />
+
+          <FormInput
+            type='password'
+            placeholder='Contraseña'
+            name='password'
+            onChange={(e) => handleChange(e)}
+          />
+
+          <FormInput
+            type='password'
+            placeholder='Repetir Contraseña'
+            name='password_repeat'
+            onChange={(e) => handleChange(e)}
+          />
+
+          {error && <p className='error'>{error}</p>}
+          {success && <p className='success'>{success}</p>}
+
+          <FormButton text='Registrarse' loading={loading} />
+        </form>
+
+        <AuthOptions
+          text='¿Ya tienes una cuenta?'
+          nameOfRoute='Inicia sesión'
+          route='/'
         />
-
-        <FormInput
-          type='text'
-          placeholder='Nombre de usuario'
-          name='userName'
-          onChange={(e) => handleChange(e)}
-        />
-
-        <FormInput
-          type='number'
-          placeholder='Edad'
-          name='age'
-          onChange={(e) => handleChange(e)}
-        />
-
-        <FormInput
-          type='email'
-          placeholder='Correo'
-          name='email'
-          onChange={(e) => handleChange(e)}
-        />
-
-        <FormInput
-          type='password'
-          placeholder='Contraseña'
-          name='password'
-          onChange={(e) => handleChange(e)}
-        />
-
-        <FormInput
-          type='password'
-          placeholder='Repetir Contraseña'
-          name='password_repeat'
-          onChange={(e) => handleChange(e)}
-        />
-
-        {error && <p className='error'>{error}</p>}
-        {success && <p className='success'>{success}</p>}
-
-        <FormButton text='Registrarse' loading={loading} />
-      </form>
-
-      <AuthOptions
-        text='¿Ya tiene cuenta?'
-        nameOfRoute='Inicie sesión'
-        route='/'
-      />
+      </div>
     </div>
   )
 }
