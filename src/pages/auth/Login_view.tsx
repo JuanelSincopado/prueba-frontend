@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Title from '../../global_components/Title'
 import AuthOptions from './component/Auth_options'
 import FormButton from '../../global_components/Form_button'
@@ -20,6 +20,23 @@ const LoginView = () => {
     email: '',
     password: '',
   })
+
+  const { setUser, setToken } = useAuthContext()
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/home')
+
+      const token = localStorage.getItem('token')
+      const user = localStorage.getItem('user')
+
+      if (token && user) {
+        setToken(token)
+        setUser(JSON.parse(user))
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const { success } = useUserContext()
   const { error, setLoading, setError, loading, login } = useAuthContext()

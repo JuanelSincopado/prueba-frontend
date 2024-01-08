@@ -23,7 +23,7 @@ const HomeState = ({ children }: Props) => {
   const [postFilterSearch, setPostFilterSearch] = useState<Post[]>([])
   const [postEdit, setPostEdit] = useState<Post>({
     content: '',
-    likes: 0,
+    likes: [],
     title: '',
     user: {
       id: '',
@@ -35,7 +35,7 @@ const HomeState = ({ children }: Props) => {
     deletedAt: null,
   })
 
-  const { token } = useAuthContext()
+  const { token, user } = useAuthContext()
 
   const getAllPosts = async () => {
     try {
@@ -96,9 +96,19 @@ const HomeState = ({ children }: Props) => {
     }
   }
 
-  const addFavorite = async (post_id: string, like: number) => {
+  const addFavorite = async (post_id: string) => {
     try {
       setLoading(true)
+
+      const post = posts.find((post) => post._id === post_id)
+
+      const exist = post?.likes.find((like) => like === user._id)
+
+      if (!exist) {
+        post?.likes.push(user._id)
+      } else {
+        post?.likes.splice(post?.likes.indexOf(user._id), 1)
+      }
 
       const response = await fetch(baseUrl + '/post/' + post_id, {
         method: 'PUT',
@@ -107,7 +117,7 @@ const HomeState = ({ children }: Props) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          likes: like,
+          likes: post?.likes,
         }),
       })
 

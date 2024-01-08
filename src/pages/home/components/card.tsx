@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useHomeContext } from '../../../context/home_context/Use_home_context'
 import Loader from '../../../global_components/Loader'
 import Post from '../../../model/Post'
@@ -23,9 +23,28 @@ const CardPost = ({ post }: Props) => {
   const [loading, setLoading] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
 
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false)
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [dropdownRef])
+
   const addFavoritePost = async () => {
     setLoading(true)
-    await addFavorite(post._id, (post.likes += 1))
+    await addFavorite(post._id)
     setLoading(false)
   }
 
@@ -48,6 +67,7 @@ const CardPost = ({ post }: Props) => {
       _id: post._id,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,
+      deletedAt: null,
     })
   }
 
@@ -59,6 +79,7 @@ const CardPost = ({ post }: Props) => {
 
           {post.user.id == user._id && (
             <div
+              ref={dropdownRef}
               className={
                 showDropdown
                   ? 'card__dropdown dropwodn_active'
@@ -94,11 +115,15 @@ const CardPost = ({ post }: Props) => {
         <div className='card__footer'>
           <img
             className='favorite'
-            src='heart.svg'
+            src={
+              post.likes.find((like) => like == user._id)
+                ? 'heart-solid.svg'
+                : 'heart-regular.svg'
+            }
             alt='like'
             onClick={() => addFavoritePost()}
           />
-          <p>{post.likes}</p>
+          <p>{post.likes.length}</p>
         </div>
       ) : (
         <Loader />

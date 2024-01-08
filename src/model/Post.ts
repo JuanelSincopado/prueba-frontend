@@ -3,7 +3,7 @@ interface Post {
   _id: string;
   title: string;
   content: string;
-  likes: number;
+  likes: string[];
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;

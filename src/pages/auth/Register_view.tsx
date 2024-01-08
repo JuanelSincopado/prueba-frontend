@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUserContext } from '../../context/user_context/Use_user_context'
 import Title from '../../global_components/Title'
 import AuthOptions from './component/Auth_options'
@@ -7,6 +7,7 @@ import FormInput from './component/Form_input'
 import FormTitle from './component/Form_title'
 import User from '../../model/User'
 import { useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../../context/auth_context/Use_auth_context'
 
 interface FormData {
   fullName: string
@@ -22,6 +23,23 @@ const RegisterView = () => {
     useUserContext()
 
   const navigate = useNavigate()
+
+  const { setUser, setToken } = useAuthContext()
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/home')
+
+      const token = localStorage.getItem('token')
+      const user = localStorage.getItem('user')
+
+      if (token && user) {
+        setToken(token)
+        setUser(JSON.parse(user))
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const [formData, setFormData] = useState<FormData>({
     fullName: '',

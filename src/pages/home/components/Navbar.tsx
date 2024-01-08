@@ -9,11 +9,11 @@ import ContentNotLogged from './Content_not_logged'
 const NavbarMobile = () => {
   const navigate = useNavigate()
   const [show, setShow] = useState(false)
-  const { setOpenEditModal } = useHomeContext()
+  const { setOpenEditUserModal } = useHomeContext()
   const { token, logout } = useAuthContext()
 
   const handleEdit = () => {
-    setOpenEditModal(true)
+    setOpenEditUserModal(true)
     setShow(false)
   }
 

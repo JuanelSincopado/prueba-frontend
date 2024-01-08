@@ -14,6 +14,10 @@
   -webkit-backdrop-filter: blur(7.4px);
 }
 
+.navbar_mobile {
+  cursor: pointer;
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -25,16 +29,16 @@
   transition: all 0.2s ease;
   list-style: none;
   padding: 20px 20px;
-
 }
 
 .content.active {
   left: 0;
   opacity: 1;
   transition: all 0.2s ease;
-  z-index: 2;
-  background: rgba(39, 39, 39, 0.89);
-  border-radius: 16px;
+  z-index: 100000;
+  background: rgba(39, 39, 39, 1);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -380,12 +384,10 @@ section {
 }
 
 .favorite {
-  filter: invert(41%) sepia(85%) saturate(664%) hue-rotate(167deg) brightness(97%) contrast(91%);
   cursor: pointer;
 }
 
 .card__dropdown {
-  position: relative;
   display: inline-block;
 }
 
@@ -394,10 +396,10 @@ section {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  right: 0px;
+  right: 10px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 12px 16px;
-  z-index: 1;
+  z-index: 0;
   border-radius: 15px;
 }
 
@@ -414,6 +416,15 @@ section {
 @media (min-width: 768px) {
   .card {
     border-radius: 15px;
+  }
+
+  .card__dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown__content {
+    right: 0px;
   }
 }
 

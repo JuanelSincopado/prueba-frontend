@@ -45,6 +45,9 @@ const AuthState = ({ children }: Props) => {
         // Successful response
         setToken(data.token)
         setUser(data.user)
+
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify(data.user))
       } else {
         // Handle error response
 
@@ -78,6 +81,9 @@ const AuthState = ({ children }: Props) => {
       createdAt: new Date(),
       updatedAt: new Date(),
     })
+
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
   }
 
   return (

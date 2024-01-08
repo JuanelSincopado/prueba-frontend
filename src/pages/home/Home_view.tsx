@@ -11,6 +11,7 @@ import CardPost from './components/card'
 import './css/home.css'
 import EnumPostModal from '../../context/home_context/local_data/Enum_modal'
 import EditModel from './components/Edit_model'
+import { useNavigate } from 'react-router-dom'
 
 const HomeView = () => {
   const {
@@ -21,10 +22,23 @@ const HomeView = () => {
     getAllPosts,
     setOpenPostModal,
   } = useHomeContext()
+
+  const { setToken, setUser } = useAuthContext()
+
   const { token } = useAuthContext()
 
   useEffect(() => {
     getAllPosts()
+
+    if (localStorage.getItem('token')) {
+      const token = localStorage.getItem('token')
+      const user = localStorage.getItem('user')
+
+      if (token && user) {
+        setToken(token)
+        setUser(JSON.parse(user))
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
