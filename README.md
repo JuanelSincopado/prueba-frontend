@@ -1,5 +1,8 @@
 # Red Social
 
+> [!NOTE]
+> En el archivo src/config/db.ts, está un baseURL para colocar la url del backend, por defecto es http://localhost:3000
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
